@@ -1,3 +1,7 @@
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
 <style>
 	.choice {
 		width: 200px;
@@ -10,6 +14,10 @@
 	
 </style>
 
+<audio style="display: none;" id="audio" controls loop>
+	<source src="theme.mp3" type="audio/mpeg">
+</audio>
+
 <div>
 	<h1>RPS</h1>
 	<img class="choice" id="user-choice-image" src="./images/scissors.png">
@@ -18,10 +26,23 @@
 	<button onclick="backward()">backward</button>
 	<button onclick="forward()">forward</button>
 	<br><br><button onclick="play()">play game</button>
+	<br><br><button onclick="playMusic()">play music</button>
+	<br><br><button onclick="pauseMusic()">pause music</button>
 </div>
 
 
 <script>
+
+
+	function playMusic() {
+		var audio = document.getElementById("audio");
+		audio.play();
+	}
+
+	function pauseMusic() {
+		var audio = document.getElementById("audio");
+		audio.pause();
+	}
 
 	var rps = [
 		"Rock",
@@ -52,6 +73,10 @@
 		console.log(count)
 		selection.innerHTML = rps[count]
 		imageChange()
+	}
+
+	function play() {
+		console.log("yes");
 	}
 
 	function imageChange() {
