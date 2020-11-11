@@ -1,3 +1,5 @@
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
@@ -28,10 +30,14 @@
 	<br><br><button onclick="play()">play game</button>
 	<br><br><button onclick="playMusic()">play music</button>
 	<br><br><button onclick="pauseMusic()">pause music</button>
+	<br><br><button onclick="computerRock()">computer rock</button>
 </div>
 
 
 <script>
+
+	let computerScore = 0;
+	let playerScore = 0;
 
 
 	function playMusic() {
@@ -59,9 +65,9 @@
 		} else {
 			count = 0
 		}
-		console.log(count)
+		// console.log(count)
 		selection.innerHTML = rps[count]
-		imageChange()
+		playerImageChange()
 	}
 
 	function backward() {
@@ -70,92 +76,230 @@
 		} else {
 			count = 2
 		}
-		console.log(count)
+		// console.log(count)
 		selection.innerHTML = rps[count]
-		imageChange()
+		playerImageChange()
 	}
 
-	function play() {
-		console.log("yes");
+	var chime = new Audio('chime.wav');
+	
+	function cloneAndPlay() {
+	    var clone = chime.cloneNode(true);
+	    clone.play();
+	}
+	
+
+	function computerRock() {
+		setTimeout(setRock,	0)
+		setTimeout(setPaper,	40)
+		setTimeout(setScissors,	80)
+		setTimeout(setRock,	120)
+		setTimeout(setPaper,	160)
+		setTimeout(setScissors,	200)
+		setTimeout(setRock,	240)
+		setTimeout(setPaper,	280)
+		setTimeout(setScissors,	320)
+		setTimeout(setRock,	360)
+		setTimeout(setPaper,	400)
+		setTimeout(setScissors,	440)
+		setTimeout(setRock,	480)
+		setTimeout(setPaper,	530)
+		setTimeout(setScissors,	590)
+		setTimeout(setRock,	660)
+		setTimeout(setRock,	740)
+		setTimeout(setPaper,	850)
+		setTimeout(setScissors,	950)
+		setTimeout(setRock,	1000)
+		setTimeout(setRock,	1200)
+		setTimeout(setPaper, 1400)
+		setTimeout(setScissors,	1600)
+		setTimeout(setRock,	2000)
+		setTimeout(setPaper, 2400)
+		setTimeout(setScissors,	2800)
+		setTimeout(setRock,	3200)
 	}
 
-	function imageChange() {
-		if (count == 0) {
-			document.getElementById("user-choice-image").src = "./images/rock.png";
-			console.log("rock image");
-		} else if (count == 1) {
-			document.getElementById("user-choice-image").src = "./images/paper.png";
-			console.log("paper image");
-		} else {
-			document.getElementById("user-choice-image").src = "./images/scissors.png";
-			console.log("scissor image");
-		}
+	function computerPaper() {
+		setTimeout(setRock,	0)
+		setTimeout(setPaper,	40)
+		setTimeout(setScissors,	80)
+		setTimeout(setRock,	120)
+		setTimeout(setPaper,	160)
+		setTimeout(setScissors,	200)
+		setTimeout(setRock,	240)
+		setTimeout(setPaper,	280)
+		setTimeout(setScissors,	320)
+		setTimeout(setRock,	360)
+		setTimeout(setPaper,	400)
+		setTimeout(setScissors,	440)
+		setTimeout(setRock,	480)
+		setTimeout(setPaper,	530)
+		setTimeout(setScissors,	590)
+		setTimeout(setRock,	660)
+		setTimeout(setRock,	740)
+		setTimeout(setPaper,	850)
+		setTimeout(setScissors,	950)
+		setTimeout(setRock,	1000)
+		setTimeout(setRock,	1200)
+		setTimeout(setPaper, 1400)
+		setTimeout(setScissors,	1600)
+		setTimeout(setRock,	2000)
+		setTimeout(setPaper, 2400)
+		setTimeout(setScissors,	2800)
+		setTimeout(setRock,	3200)
+		setTimeout(setPaper, 3600)
+	}
+
+	function computerScissors() {
+		setTimeout(setRock,	0)
+		setTimeout(setPaper,	40)
+		setTimeout(setScissors,	80)
+		setTimeout(setRock,	120)
+		setTimeout(setPaper,	160)
+		setTimeout(setScissors,	200)
+		setTimeout(setRock,	240)
+		setTimeout(setPaper,	280)
+		setTimeout(setScissors,	320)
+		setTimeout(setRock,	360)
+		setTimeout(setPaper,	400)
+		setTimeout(setScissors,	440)
+		setTimeout(setRock,	480)
+		setTimeout(setPaper,	530)
+		setTimeout(setScissors,	590)
+		setTimeout(setRock,	660)
+		setTimeout(setRock,	740)
+		setTimeout(setPaper,	850)
+		setTimeout(setScissors,	950)
+		setTimeout(setRock,	1000)
+		setTimeout(setRock,	1200)
+		setTimeout(setPaper, 1400)
+		setTimeout(setScissors,	1600)
+		setTimeout(setRock,	2000)
+		setTimeout(setPaper, 2400)
+		setTimeout(setScissors,	2800)
 	}
 
 
+	function setRock() {
+		document.getElementById("computer-choice-image").src = "./images/rock.png";		
+		cloneAndPlay();
+	}
 
+	function setPaper() {
+		document.getElementById("computer-choice-image").src = "./images/paper.png";
+		cloneAndPlay();
+	}
 
-	var computerScore = 0;
-	var playerScore = 0;
+	function setScissors() {
+		document.getElementById("computer-choice-image").src = "./images/scissors.png";
+		cloneAndPlay();
+	}
 
 	function computerPlay()	{
 		return rps[Math.floor(Math.random()*rps.length)];
 	}
 
-	function getInput() {
-		let userChoice = prompt("Rock, Paper or Scissors?")
-		return playRound(userChoice.toLowerCase());
-	}
+	function play() {
 
-	function playRound(playerSelection, computerSelection) {
+		let playerSelection = rps[count]
 
-		var computerSelection = computerPlay();
+		let computerSelection = computerPlay();
+
+		computerImageChange(computerSelection)
+
 		if ((playerSelection.toLowerCase() == "rock") & (computerSelection == "Paper"))	 {
 			computerScore++
-			return("You Lose! Paper beats Rock");
+			computerPaper();
+			console.log("You Lose! Paper beats Rock");
 		}
 		if ((playerSelection.toLowerCase() == "rock") & (computerSelection == "Scissors"))	 {
 			playerScore++
-			return("You Win! Rock beats Scissors");
+			computerScissors();
+			console.log("You Win! Rock beats Scissors");
 		}
 		if ((playerSelection.toLowerCase() == "paper") & (computerSelection == "Scissors"))	 {
 			computerScore++
-			return("You Lose! Scissors beats Paper");
+			computerScissors();
+			console.log("You Lose! Scissors beats Paper");
 		}
 		if ((playerSelection.toLowerCase() == "paper") & (computerSelection == "Rock"))	 {
 			playerScore++
-			return("You Win! Paper beats Rock");
+			computerRock();
+			console.log("You Win! Paper beats Rock");
 		}
 		if ((playerSelection.toLowerCase() == "scissors") & (computerSelection == "Rock"))	 {
 			computerScore++
-			return("You Lose! Rock beats Scissors");
+			computerRock();
+			console.log("You Lose! Rock beats Scissors");
 		}
 		if ((playerSelection.toLowerCase() == "scissors") & (computerSelection == "Paper"))	 {
 			playerScore++
-			return("You Win! Scissors beats Paper");
+			computerPaper();
+			console.log("You Win! Scissors beats Paper");
 		}
 		if (playerSelection.toLowerCase() == computerSelection.toLowerCase()) {
-			return("It's a tie!");
+			if (playerSelection.toLowerCase() == "rock") {
+				computerRock();
+			} 
+			if (playerSelection.toLowerCase() == "paper") {
+				computerPaper();
+			} 
+			if (playerSelection.toLowerCase() == "scissors") {
+				computerScissors();
+			} 
+			console.log("It's a tie!");
 		}
+
 	}
 
-	function game() {
 
-		let userChoice = prompt("Rock, Paper or Scissors?")
-	
-		for (i = 0; i < 5; i++) {
-			console.log(playRound(userChoice.toLowerCase()));
-		}
-		console.log(computerScore);
-		console.log(playerScore);
-
-		if (playerScore > computerScore) {
-			return ("Player Wins!")
-		} else if (computerScore > playerScore) {
-			return ("Computer Wins!")
+	function playerImageChange() {
+		if (count == 0) {
+			document.getElementById("user-choice-image").src = "./images/rock.png";
+			// console.log("rock image");
+		} else if (count == 1) {
+			document.getElementById("user-choice-image").src = "./images/paper.png";
+			// console.log("paper image");
 		} else {
-			return ("It's a Tie!")
+			document.getElementById("user-choice-image").src = "./images/scissors.png";
+			// console.log("scissor image");
 		}
 	}
+
+	function computerImageChange(computerSelection) {
+		if (computerSelection == "Scissors") {
+			document.getElementById("computer-choice-image").src = "./images/scissors.png";
+		}
+		if (computerSelection == "Rock") {
+			document.getElementById("computer-choice-image").src = "./images/rock.png";
+		}
+		if (computerSelection == "Paper") {
+			document.getElementById("computer-choice-image").src = "./images/paper.png";
+		}
+
+	}
+
+
+
+
+
+	// function game() {
+
+	// 	let userChoice = prompt("Rock, Paper or Scissors?")
+	
+	// 	for (i = 0; i < 5; i++) {
+	// 		console.log(playRound(userChoice.toLowerCase()));
+	// 	}
+	// 	console.log(computerScore);
+	// 	console.log(playerScore);
+
+	// 	if (playerScore > computerScore) {
+	// 		return ("Player Wins!")
+	// 	} else if (computerScore > playerScore) {
+	// 		return ("Computer Wins!")
+	// 	} else {
+	// 		return ("It's a Tie!")
+	// 	}
+	// }
 
 </script>
