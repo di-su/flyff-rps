@@ -1,305 +1,113 @@
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<html>
 <head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="css.css">
 </head>
-
-<style>
-	.choice {
-		width: 200px;
-		height: 200px;
-	}
-	#computer-choice-image {
-	  	-webkit-transform: scaleX(-1);
-  		transform: scaleX(-1);
-	}
-	
-</style>
-
-<audio style="display: none;" id="audio" controls loop>
+<body><audio style="display: none;" id="audio" controls="" loop="">
 	<source src="theme.mp3" type="audio/mpeg">
 </audio>
 
 <div>
-	<h1>RPS</h1>
-	<img class="choice" id="user-choice-image" src="./images/scissors.png">
-	<img class="choice" id="computer-choice-image" src="./images/scissors.png">
-	<div id="selection">Scissors</div>
-	<button onclick="backward()">backward</button>
-	<button onclick="forward()">forward</button>
-	<br><br><button onclick="play()">play game</button>
-	<br><br><button onclick="playMusic()">play music</button>
-	<br><br><button onclick="pauseMusic()">pause music</button>
-	<br><br><button onclick="computerRock()">computer rock</button>
+	<div id="background-div">
+		<div id="game">
+			<div id="header">
+				<p id="game-title">Rock Paper Scissors</p>
+			</div>
+			<div>
+				<p id="win-text"><span id="win-counter">0</span> win(s)</p>
+			</div>
+			<div id="battle-div">
+				<div id="battle">
+					<div>
+						<p id="selection">Scissors</p>
+						<img class="choice" id="user-choice-image" src="./images/scissors.jpg">
+						<div id="choice-buttons">
+							<div style="margin-right: 10px;" class="select-button" onclick="backward()">&lt;</div>
+							<div class="select-button" onclick="forward()">&gt;</div>
+						</div>
+					</div>
+					<div>
+						<p id="vs">VS</p>
+					</div>
+					<div>
+						<p id="computer-selection">Scissors</p>
+						<img class="choice" id="computer-choice-image" src="./images/scissors.jpg">
+					</div>
+				</div>
+			</div>
+			<div id="play-div">
+				<div id="start-button" onclick="play()">Start</div>
+			</div>
+			<div id="lose-window">
+				<div>
+					<p id="message-title">Message box</p>
+					<p id="lose-copy">You lose!</p>
+					<div style="text-align: center;padding-bottom: 20px;"><div onclick="dismissLoseWindow()" id="lose-ok-button">OK</div></div>
+				</div>
+			</div>
+			<div id="win-window">
+				<div>
+					<p id="message-title">You win!</p>
+					<div id="prize-choice">
+						<div class="prize-div">
+							<img id="current-prize" class="prize" src="http://via.placeholder.com/200x200">
+							<span id="prize-quantity-1"></span>
+							<p>End</p>
+						</div>
+						<div class="prize-div">
+							<img id="next-prize" class="prize" src="http://via.placeholder.com/200x200">
+							<span id="prize-quantity-2"></span>
+							<p>Next</p>
+						</div>
+					</div>
+					<p id="lose-copy">Press END if you want to claim your current prize and stop playing or press NEXT to continue playing for more prizes.</p>
+					<div id="win-choice">
+						<div class="prize-buttons"><div onclick="endGame()" id="end-button">END</div></div>
+						<div class="prize-buttons"><div onclick="continueGame()" id="next-button">NEXT</div></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="prizes-div" style="
+    margin-top: 20px;
+">
+	<div style="
+    background: black;
+    border-radius: 10px;
+    border: 1px solid #d2ca7e;
+">
+		<p style="
+    color: gold;
+    padding: 10px 0px;
+    background: black;
+    text-align: center;
+    border-radius: 10px 10px 0px 0px;
+    margin-bottom: 0;
+    border-bottom: 0;
+    margin-top: 0;
+">Prizes won:</p>
+		<ul id="prizes-won" style="
+    color: gold;
+    border-top: 0;
+    margin: 0;
+    padding: 10px 50px;
+"></ul>
+	</div>
 </div>
 
-
-<script>
-
-	let computerScore = 0;
-	let playerScore = 0;
-
-
-	function playMusic() {
-		var audio = document.getElementById("audio");
-		audio.play();
-	}
-
-	function pauseMusic() {
-		var audio = document.getElementById("audio");
-		audio.pause();
-	}
-
-	var rps = [
-		"Rock",
-		"Paper",
-		"Scissors"
-	];
-
-	let selection = document.getElementById("selection")
-	let count = 2 
-
-	function forward() {
-		if (count < 2) {
-			count++
-		} else {
-			count = 0
-		}
-		// console.log(count)
-		selection.innerHTML = rps[count]
-		playerImageChange()
-	}
-
-	function backward() {
-		if (count > 0) {
-			count--
-		} else {
-			count = 2
-		}
-		// console.log(count)
-		selection.innerHTML = rps[count]
-		playerImageChange()
-	}
-
-	var chime = new Audio('chime.wav');
-	
-	function cloneAndPlay() {
-	    var clone = chime.cloneNode(true);
-	    clone.play();
-	}
-	
-
-	function computerRock() {
-		setTimeout(setRock,	0)
-		setTimeout(setPaper,	40)
-		setTimeout(setScissors,	80)
-		setTimeout(setRock,	120)
-		setTimeout(setPaper,	160)
-		setTimeout(setScissors,	200)
-		setTimeout(setRock,	240)
-		setTimeout(setPaper,	280)
-		setTimeout(setScissors,	320)
-		setTimeout(setRock,	360)
-		setTimeout(setPaper,	400)
-		setTimeout(setScissors,	440)
-		setTimeout(setRock,	480)
-		setTimeout(setPaper,	530)
-		setTimeout(setScissors,	590)
-		setTimeout(setRock,	660)
-		setTimeout(setRock,	740)
-		setTimeout(setPaper,	850)
-		setTimeout(setScissors,	950)
-		setTimeout(setRock,	1000)
-		setTimeout(setRock,	1200)
-		setTimeout(setPaper, 1400)
-		setTimeout(setScissors,	1600)
-		setTimeout(setRock,	2000)
-		setTimeout(setPaper, 2400)
-		setTimeout(setScissors,	2800)
-		setTimeout(setRock,	3200)
-	}
-
-	function computerPaper() {
-		setTimeout(setRock,	0)
-		setTimeout(setPaper,	40)
-		setTimeout(setScissors,	80)
-		setTimeout(setRock,	120)
-		setTimeout(setPaper,	160)
-		setTimeout(setScissors,	200)
-		setTimeout(setRock,	240)
-		setTimeout(setPaper,	280)
-		setTimeout(setScissors,	320)
-		setTimeout(setRock,	360)
-		setTimeout(setPaper,	400)
-		setTimeout(setScissors,	440)
-		setTimeout(setRock,	480)
-		setTimeout(setPaper,	530)
-		setTimeout(setScissors,	590)
-		setTimeout(setRock,	660)
-		setTimeout(setRock,	740)
-		setTimeout(setPaper,	850)
-		setTimeout(setScissors,	950)
-		setTimeout(setRock,	1000)
-		setTimeout(setRock,	1200)
-		setTimeout(setPaper, 1400)
-		setTimeout(setScissors,	1600)
-		setTimeout(setRock,	2000)
-		setTimeout(setPaper, 2400)
-		setTimeout(setScissors,	2800)
-		setTimeout(setRock,	3200)
-		setTimeout(setPaper, 3600)
-	}
-
-	function computerScissors() {
-		setTimeout(setRock,	0)
-		setTimeout(setPaper,	40)
-		setTimeout(setScissors,	80)
-		setTimeout(setRock,	120)
-		setTimeout(setPaper,	160)
-		setTimeout(setScissors,	200)
-		setTimeout(setRock,	240)
-		setTimeout(setPaper,	280)
-		setTimeout(setScissors,	320)
-		setTimeout(setRock,	360)
-		setTimeout(setPaper,	400)
-		setTimeout(setScissors,	440)
-		setTimeout(setRock,	480)
-		setTimeout(setPaper,	530)
-		setTimeout(setScissors,	590)
-		setTimeout(setRock,	660)
-		setTimeout(setRock,	740)
-		setTimeout(setPaper,	850)
-		setTimeout(setScissors,	950)
-		setTimeout(setRock,	1000)
-		setTimeout(setRock,	1200)
-		setTimeout(setPaper, 1400)
-		setTimeout(setScissors,	1600)
-		setTimeout(setRock,	2000)
-		setTimeout(setPaper, 2400)
-		setTimeout(setScissors,	2800)
-	}
-
-
-	function setRock() {
-		document.getElementById("computer-choice-image").src = "./images/rock.png";		
-		cloneAndPlay();
-	}
-
-	function setPaper() {
-		document.getElementById("computer-choice-image").src = "./images/paper.png";
-		cloneAndPlay();
-	}
-
-	function setScissors() {
-		document.getElementById("computer-choice-image").src = "./images/scissors.png";
-		cloneAndPlay();
-	}
-
-	function computerPlay()	{
-		return rps[Math.floor(Math.random()*rps.length)];
-	}
-
-	function play() {
-
-		let playerSelection = rps[count]
-
-		let computerSelection = computerPlay();
-
-		computerImageChange(computerSelection)
-
-		if ((playerSelection.toLowerCase() == "rock") & (computerSelection == "Paper"))	 {
-			computerScore++
-			computerPaper();
-			console.log("You Lose! Paper beats Rock");
-		}
-		if ((playerSelection.toLowerCase() == "rock") & (computerSelection == "Scissors"))	 {
-			playerScore++
-			computerScissors();
-			console.log("You Win! Rock beats Scissors");
-		}
-		if ((playerSelection.toLowerCase() == "paper") & (computerSelection == "Scissors"))	 {
-			computerScore++
-			computerScissors();
-			console.log("You Lose! Scissors beats Paper");
-		}
-		if ((playerSelection.toLowerCase() == "paper") & (computerSelection == "Rock"))	 {
-			playerScore++
-			computerRock();
-			console.log("You Win! Paper beats Rock");
-		}
-		if ((playerSelection.toLowerCase() == "scissors") & (computerSelection == "Rock"))	 {
-			computerScore++
-			computerRock();
-			console.log("You Lose! Rock beats Scissors");
-		}
-		if ((playerSelection.toLowerCase() == "scissors") & (computerSelection == "Paper"))	 {
-			playerScore++
-			computerPaper();
-			console.log("You Win! Scissors beats Paper");
-		}
-		if (playerSelection.toLowerCase() == computerSelection.toLowerCase()) {
-			if (playerSelection.toLowerCase() == "rock") {
-				computerRock();
-			} 
-			if (playerSelection.toLowerCase() == "paper") {
-				computerPaper();
-			} 
-			if (playerSelection.toLowerCase() == "scissors") {
-				computerScissors();
-			} 
-			console.log("It's a tie!");
-		}
-
-	}
-
-
-	function playerImageChange() {
-		if (count == 0) {
-			document.getElementById("user-choice-image").src = "./images/rock.png";
-			// console.log("rock image");
-		} else if (count == 1) {
-			document.getElementById("user-choice-image").src = "./images/paper.png";
-			// console.log("paper image");
-		} else {
-			document.getElementById("user-choice-image").src = "./images/scissors.png";
-			// console.log("scissor image");
-		}
-	}
-
-	function computerImageChange(computerSelection) {
-		if (computerSelection == "Scissors") {
-			document.getElementById("computer-choice-image").src = "./images/scissors.png";
-		}
-		if (computerSelection == "Rock") {
-			document.getElementById("computer-choice-image").src = "./images/rock.png";
-		}
-		if (computerSelection == "Paper") {
-			document.getElementById("computer-choice-image").src = "./images/paper.png";
-		}
-
-	}
-
-
-
-
-
-	// function game() {
-
-	// 	let userChoice = prompt("Rock, Paper or Scissors?")
-	
-	// 	for (i = 0; i < 5; i++) {
-	// 		console.log(playRound(userChoice.toLowerCase()));
-	// 	}
-	// 	console.log(computerScore);
-	// 	console.log(playerScore);
-
-	// 	if (playerScore > computerScore) {
-	// 		return ("Player Wins!")
-	// 	} else if (computerScore > playerScore) {
-	// 		return ("Computer Wins!")
-	// 	} else {
-	// 		return ("It's a Tie!")
-	// 	}
-	// }
-
-</script>
+<div>
+	<!-- <br><br><button onclick="playMusic()">play music</button>
+	<br><br><button onclick="pauseMusic()">pause music</button> -->
+<p id="prize"></p>
+<!-- 	<div id="win-window">
+		<p>you win</p>
+		
+		<button onclick="endGame()">end</button>
+		<button onclick="continueGame()">next</button>
+	</div> -->
+</div>
+</body></html>
+<script src="js.js"></script>
+<script src="tooltip.js"></script>
